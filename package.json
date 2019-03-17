@@ -1,0 +1,27 @@
+{
+  "name": "technicalbrief",
+  "version": "1.0.0",
+  "description": "This project uses Loopback 4 as an API framework to serve files through a REST API.\r Loopback 4 is an extension on top of Express.js with a CLI to generate controllers, models, ACLs etc.\r It uses Typescript natively and the models can be shared with React.",
+  "main": "technical-brief/index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "npm run --prefix client build",
+    "start": "node .",
+    "start-dev": "concurrently \"nodemon .\" \"npm start --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lurer/technicalBrief.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lurer/technicalBrief/issues"
+  },
+  "homepage": "https://github.com/lurer/technicalBrief#readme"
+}
