@@ -19,6 +19,7 @@ import {
 
 import {FileObjectRepository} from '../repositories';
 import { FileObject } from '../models/file-object.model';
+import { FileBody } from '../models/types';
 
 export class FileController {
   constructor(
@@ -27,18 +28,43 @@ export class FileController {
   ) {}
 
 
+
+  /**
+   * Using the MultipartFormDataBodyParser to parse multipart/form-data 
+   * @param body FileBody
+   */
   @post('/files', {
     responses: {
-      '200': {
-        description: 'FileObject model instance',
-        content: {'application/json': {schema: {'x-ts-type': FileObject}}},
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: '',
       },
     },
   })
-  async create(@requestBody() fileObject: FileObject): Promise<FileObject> {
-    return await this.fileObjectRepository.create(fileObject);
+  async create(
+    @requestBody({
+      description: 'multipart/form-data value.',
+      required: true,
+      content: {
+        "multipart/form-data": {
+          schema: {type: 'object'},
+        },
+      },
+    })
+    body: FileBody,
+  ) : Promise<FileObject> {
+    //console.log(body)
+    body.files[0].fieldname = "Test"
+    return await this.fileObjectRepository.create(body.files[0]) 
   }
 
+  
   @get('/files/count', {
     responses: {
       '200': {
