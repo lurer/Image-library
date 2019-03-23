@@ -21,5 +21,5 @@ export interface FileObject extends BaseModel {
     mimetype: string;
     buffer: Buffer;
     size: number;
-    id: number;
+    _id: string;
 }
