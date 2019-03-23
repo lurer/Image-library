@@ -27,8 +27,6 @@ export class FileController {
     public fileObjectRepository : FileObjectRepository,
   ) {}
 
-
-
   /**
    * Using the MultipartFormDataBodyParser to parse multipart/form-data 
    * @param body FileBody
@@ -59,9 +57,10 @@ export class FileController {
     })
     body: FileBody,
   ) : Promise<FileObject> {
-    //console.log(body)
-    body.files[0].fieldname = "Test"
-    return await this.fileObjectRepository.create(body.files[0]) 
+    //Setting fieldname to original name. For some reason original name is undefined in React, 
+    //even though it is displayed in the console correctly.
+    body.files[0].fieldname = body.files[0].originalname; 
+    return await this.fileObjectRepository.create(body.files[0]);
   }
 
   
@@ -120,7 +119,7 @@ export class FileController {
       },
     },
   })
-  async findById(@param.path.number('id') id: number): Promise<FileObject> {
+  async findById(@param.path.number('id') id: string): Promise<FileObject> {
     return await this.fileObjectRepository.findById(id);
   }
 
@@ -132,7 +131,7 @@ export class FileController {
     },
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @requestBody() fileObject: FileObject,
   ): Promise<void> {
     await this.fileObjectRepository.updateById(id, fileObject);
@@ -146,7 +145,7 @@ export class FileController {
     },
   })
   async replaceById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @requestBody() fileObject: FileObject,
   ): Promise<void> {
     await this.fileObjectRepository.replaceById(id, fileObject);
@@ -159,7 +158,7 @@ export class FileController {
       },
     },
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.number('id') id: string): Promise<void> {
     await this.fileObjectRepository.deleteById(id);
   }
 }

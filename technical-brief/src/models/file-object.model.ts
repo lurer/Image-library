@@ -39,10 +39,10 @@ export class FileObject extends Entity {
   size: number;
 
   @property({
-    type: 'number',
+    type: 'string',
     id: true,
   })
-  id: number;
+  _id: string;
 
 
   constructor(data?: Partial<FileObject>) {
