@@ -19,7 +19,8 @@ export interface FileObject extends BaseModel {
     orgiginalname: string;
     encoding: string;
     mimetype: string;
-    buffer: Buffer;
+    data: string;
     size: number;
+    created: Date;
     _id: string;
 }
