@@ -1,7 +1,7 @@
 import {Entity, model, property} from '@loopback/repository';
 
 @model()
-export class FileObject extends Entity {
+export class FilePersisted extends Entity {
   @property({
     type: 'string',
     required: true,
@@ -39,13 +39,19 @@ export class FileObject extends Entity {
   size: number;
 
   @property({
+    type: 'date',
+    required: true,
+  })
+  created: Date;
+
+  @property({
     type: 'string',
     id: true,
   })
   _id: string;
 
 
-  constructor(data?: Partial<FileObject>) {
+  constructor(data?: Partial<FilePersisted>) {
     super(data);
   }
 }

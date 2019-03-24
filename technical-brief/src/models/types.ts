@@ -1,6 +1,6 @@
-import { FileObject } from "./file-object.model";
+import { FilePersisted } from "./file-persisted.model";
 
 export interface FileBody{
-    files: Array<FileObject>
+    files: Array<FilePersisted>
   }
   

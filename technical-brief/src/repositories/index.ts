@@ -1,1 +1,1 @@
-export * from './file-object.repository';
+export * from './file-persisted.repository';
