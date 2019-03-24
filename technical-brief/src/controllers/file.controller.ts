@@ -17,14 +17,15 @@ import {
   requestBody,
 } from '@loopback/rest';
 
-import {FileObjectRepository} from '../repositories';
-import { FileObject } from '../models/file-object.model';
+import {FilePersistedRepository} from '../repositories';
+import { FilePersisted } from '../models/file-persisted.model';
 import { FileBody } from '../models/types';
+import { FileView } from '../models/file-view.model';
 
 export class FileController {
   constructor(
-    @repository(FileObjectRepository)
-    public fileObjectRepository : FileObjectRepository,
+    @repository(FilePersistedRepository)
+    public filePersistedRepository : FilePersistedRepository,
   ) {}
 
   /**
@@ -56,11 +57,12 @@ export class FileController {
       },
     })
     body: FileBody,
-  ) : Promise<FileObject> {
+  ) : Promise<FilePersisted> {
     //Setting fieldname to original name. For some reason original name is undefined in React, 
     //even though it is displayed in the console correctly.
     body.files[0].fieldname = body.files[0].originalname; 
-    return await this.fileObjectRepository.create(body.files[0]);
+    body.files[0].created = new Date();
+    return await this.filePersistedRepository.create(body.files[0]);
   }
 
   
@@ -73,9 +75,9 @@ export class FileController {
     },
   })
   async count(
-    @param.query.object('where', getWhereSchemaFor(FileObject)) where?: Where,
+    @param.query.object('where', getWhereSchemaFor(FilePersisted)) where?: Where,
   ): Promise<Count> {
-    return await this.fileObjectRepository.count(where);
+    return await this.filePersistedRepository.count(where);
   }
 
   @get('/files', {
@@ -84,16 +86,30 @@ export class FileController {
         description: 'Array of FileObject model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: {'x-ts-type': FileObject}},
+            schema: {type: 'array', items: {'x-ts-type': FilePersisted}},
           },
         },
       },
     },
   })
   async find(
-    @param.query.object('filter', getFilterSchemaFor(FileObject)) filter?: Filter,
-  ): Promise<FileObject[]> {
-    return await this.fileObjectRepository.find(filter);
+    @param.query.object('filter', getFilterSchemaFor(FilePersisted)) filter?: Filter,
+  ): Promise<Array<Partial<FileView>>> {
+    let files = await this.filePersistedRepository.find(filter);
+    let viewList = new Array<Partial<FileView>>();
+    files.forEach((f) => {
+      viewList.push({
+        _id: f._id,
+        created: f.created,
+        encoding: f.encoding,
+        fieldname: f.fieldname,
+        mimetype: f.mimetype,
+        originalname: f.originalname,
+        size: f.size,
+        data: Buffer.from(f.buffer).toString("base64")
+      })
+    })
+    return viewList;
   }
 
   @patch('/files', {
@@ -105,22 +121,22 @@ export class FileController {
     },
   })
   async updateAll(
-    @requestBody() fileObject: FileObject,
-    @param.query.object('where', getWhereSchemaFor(FileObject)) where?: Where,
+    @requestBody() fileObject: FilePersisted,
+    @param.query.object('where', getWhereSchemaFor(FilePersisted)) where?: Where,
   ): Promise<Count> {
-    return await this.fileObjectRepository.updateAll(fileObject, where);
+    return await this.filePersistedRepository.updateAll(fileObject, where);
   }
 
   @get('/files/{id}', {
     responses: {
       '200': {
         description: 'FileObject model instance',
-        content: {'application/json': {schema: {'x-ts-type': FileObject}}},
+        content: {'application/json': {schema: {'x-ts-type': FilePersisted}}},
       },
     },
   })
-  async findById(@param.path.number('id') id: string): Promise<FileObject> {
-    return await this.fileObjectRepository.findById(id);
+  async findById(@param.path.number('id') id: string): Promise<FilePersisted> {
+    return await this.filePersistedRepository.findById(id);
   }
 
   @patch('/files/{id}', {
@@ -132,9 +148,9 @@ export class FileController {
   })
   async updateById(
     @param.path.number('id') id: string,
-    @requestBody() fileObject: FileObject,
+    @requestBody() fileObject: FilePersisted,
   ): Promise<void> {
-    await this.fileObjectRepository.updateById(id, fileObject);
+    await this.filePersistedRepository.updateById(id, fileObject);
   }
 
   @put('/files/{id}', {
@@ -146,9 +162,9 @@ export class FileController {
   })
   async replaceById(
     @param.path.number('id') id: string,
-    @requestBody() fileObject: FileObject,
+    @requestBody() fileObject: FilePersisted,
   ): Promise<void> {
-    await this.fileObjectRepository.replaceById(id, fileObject);
+    await this.filePersistedRepository.replaceById(id, fileObject);
   }
 
   @del('/files/{id}', {
@@ -159,6 +175,6 @@ export class FileController {
     },
   })
   async deleteById(@param.path.number('id') id: string): Promise<void> {
-    await this.fileObjectRepository.deleteById(id);
+    await this.filePersistedRepository.deleteById(id);
   }
 }
