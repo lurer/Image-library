@@ -1,36 +1,40 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { AppContextConsumer, AppContext } from '../../contexts/AppContext';
 import { FileObject } from '../../models/types';
-import axios from 'axios';
 
 import styles from './fileList.module.scss';
 import { FileApi } from '../../api/FileApi';
+import { FileContext } from '../../contexts/FileContext';
+import File from './File';
 
 
 const FileList = () => {
-    
-    const endpoint = "files";
-    const [data, setData] = useState<Array<FileObject>>( [] );
-    const context = useContext(AppContext);
-    const api = new FileApi<FileObject>(context.serverEnv, endpoint)
+
+    const appCtx = useContext(AppContext);
+    const fileCtx = useContext(FileContext);
+    const {files, addFiles: addFiles} = useContext(FileContext);
+    const api = new FileApi<FileObject, FileObject>(appCtx.serverEnv, fileCtx.endpoint)
 
     useEffect(() => {
         const fetchApi = async () => {
             const result = await api.getAll()
-            setData(result)
+            addFiles(result)
         }
         fetchApi();
-    })
+    }, [])
 
-    return(
-        <Fragment>
-            {data && data.map((file) => {
 
+
+    return (
+        <div className={styles.fileList}>
+            {files && files.map((file, index) => {
+                return (
+                    <File key={file._id} file={file}/>
+                )
             })}
-        </Fragment>
-
+        </div>
     )
-    
+
 }
 
 export default FileList;
