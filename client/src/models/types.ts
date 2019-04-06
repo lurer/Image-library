@@ -9,12 +9,19 @@ export interface FileContextInterface{
 
 export interface AppContextInterface {
     serverEnv: AppContextServer;
+    alertMessage: (message: StatusMessage) => void;
 }
 
 export interface AppContextServer {
     server: string;
     apiEndpoint: string;
     port: number;
+}
+
+export interface StatusMessage {
+    type: string;
+    title: string;
+    message?: string;
 }
 
 export interface BaseModel {
