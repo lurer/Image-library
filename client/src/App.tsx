@@ -5,6 +5,8 @@ import { AppContextInterface } from './models/types';
 import FileWrapper from './components/File/FileWrapper';
 import * as types from './models/types';
 import styles from './app.module.scss';
+import SortMethods from './components/File/SortMehtods';
+import FileTopWrapper from './components/File/FileTopWrapper';
 
 const appContext: AppContextInterface = {
   serverEnv: {
@@ -38,7 +40,11 @@ class App extends Component {
           <AppContextProvider value={appContext}>
             <Suspense fallback={<LoadingPage />}>
               <FileWrapper>
-                <NewFile />
+                <FileTopWrapper>
+                    <NewFile />
+                    <SortMethods />
+                </FileTopWrapper>
+                
                 <FileList />
 
               </FileWrapper>
