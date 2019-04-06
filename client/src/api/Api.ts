@@ -15,8 +15,14 @@ export class Api<T extends BaseModel> implements GenericApi<T> {
         this.uri = `${this.env.server}:${this.env.port}${this.env.apiEndpoint}${endpoint}`
     }
 
-    get = async (id: number) : Promise<T> => {
-        return {} as any
+    get = async (id: string) : Promise<T> => {
+        const result = await Axios.get<T>(`${this.uri}/${id}`)
+        return result.data;
+    }
+
+    getIds = async () : Promise<Array<string>> => {
+        const result = await Axios.get<Array<string>>(`${this.uri}/ids`)
+        return result.data;
     }
     
     getAll = async () : Promise<T[]> => {

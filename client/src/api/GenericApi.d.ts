@@ -2,7 +2,8 @@ import { BaseModel } from "../models/types";
 
 
 export interface GenericApi<T extends BaseModel> {
-    get: (id: number) => Promise<T>;
+    get: (id: string) => Promise<T>;
+    getIds: () => Promise<Array<string>>;
     getAll: () => Promise<Array<T>>;
     create: (object: T) => Promise<T>;
     //find: () => Promise<T>;
