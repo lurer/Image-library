@@ -3,6 +3,7 @@ export interface FileContextInterface{
     files:Array<FileObject>, 
     addFiles: (files:Array<FileObject>) => void
     deleteFile: (id: string) => void
+    sortFiles: (id: string) => void
     endpoint: string;
 }
 

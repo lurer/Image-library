@@ -14,12 +14,27 @@ const FileWrapper = (props: any) => {
         setFiles(files.filter((f: FileObject, idx: number) => f._id != id))
     }
 
+    
+    const sortFiles = (propName: string) => {
+        if(propName == "fieldname"){
+            setFiles(files.concat().sort((a: FileObject, b: FileObject) => {
+                return a.fieldname.localeCompare(b.fieldname)
+            }))
+        }else if(propName == "size"){
+            setFiles(files.concat().sort((a: FileObject, b: FileObject) => {
+                if(a.size < b.size) return -1
+                if(a.size > b.size) return 1
+                return 0;
+            }))
+        }
+    }
+
     const endpoint = "files";
     
 
     return (
         <div className={styles.fileWrapper}>
-            <FileContextProvider value={{ files: files, addFiles: addFiles, endpoint: endpoint, deleteFile:deleteFile }}>
+            <FileContextProvider value={{ files: files, addFiles: addFiles, endpoint: endpoint, deleteFile:deleteFile, sortFiles:sortFiles }}>
                 {props.children}
             </FileContextProvider>
         </div>

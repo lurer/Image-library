@@ -1,0 +1,21 @@
+
+.sortWrapper{
+    display:flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    padding: 2px 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+
+}
+.sortWrapperInner{
+    display: flex;
+    flex-flow: column wrap;
+    margin-left: 15px;
+}
+
+.sortLink{
+    color: rgba($color: #ad1e1e, $alpha: 1.0)
+}
