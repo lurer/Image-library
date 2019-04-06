@@ -1,0 +1,35 @@
+
+.wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 500px;
+    height: auto;
+    text-align: center;
+}
+
+@keyframes fadeOut{
+    0% { background-color: rgba(255,255,255,1);}
+    100% { background-color: rgba(255,255,255,0); color: rgba(255,255,255,0);}
+}
+
+.element{
+    // animation: fadeOut 2s ease;
+    padding: 3px 10px;
+    border-radius: 5px;
+}
+
+.title{
+    padding: 0;
+    margin: 0;
+}
+
+.info{
+    color: rgba($color: #134261, $alpha: 1.0);
+}
+
+.error{
+    color: red;
+}
