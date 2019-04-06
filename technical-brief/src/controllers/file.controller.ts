@@ -57,12 +57,13 @@ export class FileController {
       },
     })
     body: FileBody,
-  ) : Promise<FilePersisted> {
+  ) : Promise<FileView> {
     //Setting fieldname to original name. For some reason original name is undefined in React, 
     //even though it is displayed in the console correctly.
     body.files[0].fieldname = body.files[0].originalname; 
     body.files[0].created = new Date();
-    return await this.filePersistedRepository.create(body.files[0]);
+    const result = await this.filePersistedRepository.create(body.files[0]);
+    return FileView.convertToView(result)
   }
 
   
@@ -98,16 +99,7 @@ export class FileController {
     let files = await this.filePersistedRepository.find(filter);
     let viewList = new Array<Partial<FileView>>();
     files.forEach((f) => {
-      viewList.push({
-        _id: f._id,
-        created: f.created,
-        encoding: f.encoding,
-        fieldname: f.fieldname,
-        mimetype: f.mimetype,
-        originalname: f.originalname,
-        size: f.size,
-        data: Buffer.from(f.buffer).toString("base64")
-      })
+      viewList.push(FileView.convertToView(f))
     })
     return viewList;
   }
@@ -135,7 +127,7 @@ export class FileController {
       },
     },
   })
-  async findById(@param.path.number('id') id: string): Promise<FilePersisted> {
+  async findById(@param.path.string('id') id: string): Promise<FilePersisted> {
     return await this.filePersistedRepository.findById(id);
   }
 
@@ -147,9 +139,12 @@ export class FileController {
     },
   })
   async updateById(
-    @param.path.number('id') id: string,
-    @requestBody() fileObject: FilePersisted,
+    @param.path.string('id') id: string,
+    @requestBody() fileObject: FileView,
   ): Promise<void> {
+    const persistedFile = await this.filePersistedRepository.findById(id);
+    persistedFile.fieldname = fileObject.fieldname;
+    persistedFile.originalname = fileObject.originalname;
     await this.filePersistedRepository.updateById(id, fileObject);
   }
 
@@ -161,7 +156,7 @@ export class FileController {
     },
   })
   async replaceById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @requestBody() fileObject: FilePersisted,
   ): Promise<void> {
     await this.filePersistedRepository.replaceById(id, fileObject);
@@ -174,7 +169,7 @@ export class FileController {
       },
     },
   })
-  async deleteById(@param.path.number('id') id: string): Promise<void> {
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.filePersistedRepository.deleteById(id);
   }
 }
