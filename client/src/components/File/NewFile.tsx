@@ -2,21 +2,24 @@ import React, { SyntheticEvent, useEffect, useState, useContext } from 'react';
 import { AppContextConsumer, AppContext } from '../../contexts/AppContext';
 import styles from './newFile.module.scss';
 import { FileApi } from '../../api/FileApi';
-
-
+import { FileObject } from '../../models/types';
+import { FileContext } from '../../contexts/FileContext';
 
 
 const NewFile = () => {
 
     const endpoint = "files";
     const context = useContext(AppContext);
-    const api = new FileApi<File>(context.serverEnv, endpoint);
+    const {files, addFiles} = useContext(FileContext);
+    const api = new FileApi<File, FileObject>(context.serverEnv, endpoint);
 
 
-    
-    
     const prepareSend = async (file: File) => {
-        await api.uploadFile(file)
+        if(file.type.startsWith("image/")){
+            const result = await api.uploadFile(file)
+            addFiles([result])
+        }
+        
     }
     
     const fileOnChange = (files: FileList|null) => {
@@ -28,9 +31,9 @@ const NewFile = () => {
     return(
         <AppContextConsumer>
             {appContext => appContext &&
-                <div>
-                    <label htmlFor="fileUpload">
-                        <input id="fileUpload" type="file" onChange={(e) => fileOnChange(e.target.files)} multiple></input>
+                <div className={styles.newFileContainer}>
+                    <label htmlFor="fileUpload" className={styles.fileUploadLabel}>Last opp bilder
+                        <input id="fileUpload" className={styles.fileUpload} type="file" multiple accept='image/*' onChange={(e) => fileOnChange(e.target.files)}></input>
                     </label>
                     
                 </div>
