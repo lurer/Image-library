@@ -6,8 +6,8 @@ export interface GenericApi<T extends BaseModel> {
     getAll: () => Promise<Array<T>>;
     create: (object: T) => Promise<T>;
     //find: () => Promise<T>;
-    update: (toUpdate: T) => Promise<T>
-    delete: (id: number) => Promise<number>;
+    update: (id: string, toUpdate: T) => Promise<boolean>
+    delete: (id: string) => Promise<boolean>;
     //count: () => Promise<number>
 
 }

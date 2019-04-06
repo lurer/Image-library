@@ -26,12 +26,14 @@ export class Api<T extends BaseModel> implements GenericApi<T> {
     create = async (object: T) : Promise<T> => {
         return {} as any;
     };
-    update = async (toUpdate: T) : Promise<T> => {
-        return {} as any;
+    update = async (id: string, toUpdate: T) : Promise<boolean> => {
+        const result = await Axios.patch<T>(`${this.uri}/${id}`, toUpdate)
+        return result.status == 204;
     };
 
-    delete =  async (id: number) : Promise<number> => {
-        return {} as any;
+    delete =  async (id: string) : Promise<boolean> => {
+        const result = await Axios.delete(`${this.uri}/${id}`)
+        return result.status == 204;
     };
 
 
