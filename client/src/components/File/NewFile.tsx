@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { AppContextConsumer, AppContext } from '../../contexts/AppContext';
 import styles from './newFile.module.scss';
 import { FileApi } from '../../api/FileApi';
