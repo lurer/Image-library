@@ -12,6 +12,10 @@ if (require.main === module) {
         // useful when used with OASGraph to locate your application
         setServersFromRequest: true,
       },
+      requestBodyParser: {
+        json: {limit: '10MB'},
+        text: {limit: '1MB'},
+      }
     },
   };
   application.main(config).catch(err => {
