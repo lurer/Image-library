@@ -52,6 +52,14 @@ const File = (props: FileProps) => {
         const result = await api.update(file._id, file).then((ok: boolean) => { setEdit(false); return ok;})
     }
     
+    const onKeyDown = (event: any): void => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          event.stopPropagation();
+          changeName();
+          setEdit(false);
+        }
+      }
 
     const { file } = props
     let image = FileObjectToImage(file);
@@ -75,7 +83,7 @@ const File = (props: FileProps) => {
                                 </Fragment>
                             : 
                                 <Fragment>
-                                    <input type="text" className={styles.changeNameInput} value={file.fieldname} onChange={handleOnChange} onBlur={handleOnBlur}/>
+                                    <input type="text" className={styles.changeNameInput} value={file.fieldname} onChange={handleOnChange}  onKeyPress={onKeyDown} onBlur={handleOnBlur}/>
                                     <button className={[styles.btn, styles.btnConfirm].join(' ')} onClick={changeName}>OK</button>
                                 </Fragment>
                                 
