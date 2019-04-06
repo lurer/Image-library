@@ -16,11 +16,21 @@ const FileList = () => {
     const api = new FileApi<FileObject, FileObject>(appCtx.serverEnv, fileCtx.endpoint)
 
     useEffect(() => {
-        const fetchApi = async () => {
-            const result = await api.getAll()
-            addFiles(result)
+        try{
+            const fetchApi = async () => {
+                const result = await api.getIds()
+                if(result != undefined)
+                result.map(async id => {
+                    if(id != undefined)
+                        await api.get(id).then((file: FileObject) =>  addFiles([file]))
+                
+                })
+            }
+            fetchApi();
+        }catch(err){
+            appCtx.alertMessage({title: "Kunne ikke hente bildene fra server", type:"error"})
         }
-        fetchApi();
+        
     }, [])
 
 

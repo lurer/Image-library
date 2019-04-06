@@ -17,5 +17,8 @@
 }
 
 .sortLink{
-    color: rgba($color: #ad1e1e, $alpha: 1.0)
+    color: rgba($color: #ad1e1e, $alpha: 1.0);
+    &:hover{
+        cursor: pointer;
+    }
 }

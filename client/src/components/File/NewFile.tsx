@@ -9,16 +9,22 @@ import { FileContext } from '../../contexts/FileContext';
 const NewFile = () => {
 
     const endpoint = "files";
-    const context = useContext(AppContext);
+    const appCtx = useContext(AppContext);
     const {files, addFiles} = useContext(FileContext);
-    const api = new FileApi<File, FileObject>(context.serverEnv, endpoint);
+    const api = new FileApi<File, FileObject>(appCtx.serverEnv, endpoint);
 
 
     const prepareSend = async (file: File) => {
-        if(file.type.startsWith("image/")){
-            const result = await api.uploadFile(file)
-            addFiles([result])
+        try{
+            if(file.type.startsWith("image/")){
+                const result = await api.uploadFile(file)
+                addFiles([result])
+            }
+            appCtx.alertMessage({title: "Bildet/bildene er lagret", type:"info"})
+        }catch(err){
+            appCtx.alertMessage({title: "Bildet kunne ikke lagres", type:"error"})
         }
+
         
     }
     

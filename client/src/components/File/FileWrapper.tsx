@@ -34,7 +34,13 @@ const FileWrapper = (props: any) => {
 
     return (
         <div className={styles.fileWrapper}>
-            <FileContextProvider value={{ files: files, addFiles: addFiles, endpoint: endpoint, deleteFile:deleteFile, sortFiles:sortFiles }}>
+            <FileContextProvider value={{ 
+                    files: files, 
+                    addFiles: addFiles, 
+                    endpoint: endpoint, 
+                    deleteFile:deleteFile, sortFiles:sortFiles 
+                    
+                }}>
                 {props.children}
             </FileContextProvider>
         </div>

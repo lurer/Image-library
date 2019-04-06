@@ -43,13 +43,33 @@ const File = (props: FileProps) => {
 
     const deleteImage = async () => {
         const { file } = props;
-        const result = await api.delete(file._id).then((ok: boolean) => { setEdit(false); return ok;})
-        if(result) fileCtx.deleteFile(file._id);
+        try{
+            const result = await api.delete(file._id).then((ok: boolean) => { setEdit(false); return ok;})
+            if(result) {
+                fileCtx.deleteFile(file._id);
+                appCtx.alertMessage({title: "Bildet er slettet", type:"info"})
+            }else 
+            appCtx.alertMessage({title: "Bildet kunne ikke slettes", type:"error"})
+            
+        }catch(err){
+            appCtx.alertMessage({title: "Bildet kunne ikke slettes", type:"error"})
+        }
+
     }
 
     const changeName = async () => {
         const { file } = props;
-        const result = await api.update(file._id, file).then((ok: boolean) => { setEdit(false); return ok;})
+        try{
+            const result = await api.update(file._id, file).then((ok: boolean) => { setEdit(false); return ok;})
+            if(result)
+                appCtx.alertMessage({title: "Navnet er endret", type:"info"})
+            else
+                appCtx.alertMessage({title: "Navnet kunne ikke endres", type:"error"})
+        }catch(err){
+            appCtx.alertMessage({title: "Navnet kunne ikke endres", type:"error"})
+        }
+        
+
     }
     
     const onKeyDown = (event: any): void => {
