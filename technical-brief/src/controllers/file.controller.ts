@@ -81,6 +81,9 @@ export class FileController {
     return await this.filePersistedRepository.count(where);
   }
 
+
+
+
   @get('/files', {
     responses: {
       '200': {
@@ -104,6 +107,9 @@ export class FileController {
     return viewList;
   }
 
+
+
+
   @patch('/files', {
     responses: {
       '200': {
@@ -119,6 +125,29 @@ export class FileController {
     return await this.filePersistedRepository.updateAll(fileObject, where);
   }
 
+
+
+
+
+  @get('/files/ids', {
+    responses: {
+      '200': {
+        description: 'File id list',
+        content: {'application/json': {schema: {type: "string"}}},
+      },
+    },
+  })
+  async getIds(@param.query.object('where', getWhereSchemaFor(FileView)) where?: Where,)
+  : Promise<Array<string>> {
+    const result = await this.filePersistedRepository.find();
+    //console.log(result)
+    return result.map(file => file._id);
+  }
+
+
+
+
+
   @get('/files/{id}', {
     responses: {
       '200': {
@@ -127,9 +156,12 @@ export class FileController {
       },
     },
   })
-  async findById(@param.path.string('id') id: string): Promise<FilePersisted> {
-    return await this.filePersistedRepository.findById(id);
+  async findById(@param.path.string('id') id: string): Promise<Partial<FileView>> {
+    return FileView.convertToView(await this.filePersistedRepository.findById(id));
   }
+
+
+
 
   @patch('/files/{id}', {
     responses: {
@@ -148,6 +180,9 @@ export class FileController {
     await this.filePersistedRepository.updateById(id, fileObject);
   }
 
+
+
+
   @put('/files/{id}', {
     responses: {
       '204': {
@@ -161,6 +196,10 @@ export class FileController {
   ): Promise<void> {
     await this.filePersistedRepository.replaceById(id, fileObject);
   }
+
+
+
+
 
   @del('/files/{id}', {
     responses: {
