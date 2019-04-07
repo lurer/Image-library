@@ -2,7 +2,8 @@
 This project uses Loopback 4 as an API framework to serve files through a REST API.
 Loopback 4 is an extension on top of Express.js with a CLI to generate controllers and models etc.
 
-The main goal with this implementation has been to learn the new features of React and Loopback, both of which I want to use in my own projects.
+The main goal with this implementation has been to learn the new features of React and Loopback, both of which I want to use in my own projects. this is not a complete project for handling images. Just selected features to play with new technology.
+
 The use of external libraries for UI components and features has been minimal.
 
 
