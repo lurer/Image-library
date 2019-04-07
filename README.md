@@ -5,6 +5,12 @@ Loopback 4 is an extension on top of Express.js with a CLI to generate controlle
 The main goal with this implementation has been to learn the new features of React and Loopback, both of which I want to use in my own projects.
 The use of external libraries for UI components and features has been minimal.
 
+
+## Prerequisites
+* MongoDb running on local macine.
+* Node v10 or higher. Not tested with anything else.
+* Clone the project, and from the root folder run `npm install`.
+
 ## Run the project
 For development: 
 * Create a /client/.env file to specify port for webpack devServer. Like -> PORT=3001
@@ -47,18 +53,18 @@ MongoDB was used for convenience. PostgreSQL did not like the Buffer data type, 
 
 Database settings:
 
-    ```json
-    {
-        "name": "mongodb",
-        "connector": "mongodb",
-        "url": "",
-        "host": "localhost",
-        "port": 270017,
-        "user": "",
-        "password": "",
-        "database": "fileStore"
-    }
-    ```
+```json
+{
+    "name": "mongodb",
+    "connector": "mongodb",
+    "url": "",
+    "host": "localhost",
+    "port": 270017,
+    "user": "",
+    "password": "",
+    "database": "fileStore"
+}
+```
 Persisted model in database. It is the interface for the generated model. It has a NodeJs Buffer for the file data:
 
 ```typescript
