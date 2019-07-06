@@ -98,5 +98,5 @@ interface FileView {
 
 ## Known limitations
 There are a few limitations to the project.
-* Error handling is basic. Wnated to use the `ErrorBoundry` solution from React together with `Axios` interceptors, but `ErrorBoundry` is not yet supported with funtional components.
+* Error handling is basic. Wanted to use the `ErrorBoundry` solution from React together with `Axios` interceptors, but `ErrorBoundry` is not yet supported with funtional components.
 * Could not get `getIds` method in `FileController` to work without getting all files in database and then filter out the ids. This makes page load with many images slower than it should be.
